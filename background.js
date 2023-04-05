@@ -39,6 +39,8 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 			}
 		}
 		
+		if(group === undefined) return; // in case of no active rules group
+		
 		if(_groups[group]['rules'] === null || 
 			_groups[group]['rules'] === undefined)
 			return;

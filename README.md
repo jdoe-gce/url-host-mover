@@ -1,2 +1,2 @@
 # url-mover
-This extension aims to record URL automatic redirector rules organised by groups
+This Google Chrome Extension aims to record URL automatic redirector rules organised by groups
