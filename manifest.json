@@ -2,7 +2,7 @@
 	"manifest_version": 3,
 	"name": "URL Mover",
 	"description": "Multiple groups of URL redirection rules",
-	"version": "0.0.0.1",
+	"version": "0.0.2.0",
 	"action": {
 		"default_icon": {
 			"16": "um-logo-16.png",
