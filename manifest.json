@@ -1,0 +1,22 @@
+{
+	"manifest_version": 3,
+	"name": "URL Mover",
+	"description": "Multiple groups of URL redirection rules",
+	"version": "0.0.0.1",
+	"action": {
+		"default_icon": {
+			"16": "um-logo-16.png",
+			"24": "um-logo-24.png",
+			"32": "um-logo-32.png"
+		},
+		"default_title": "URL Mover",
+		"default_popup": "popup.html"
+	},
+	"background": {
+		"service_worker": "background.js"
+	},
+	"permissions": [
+		"tabs",
+		"storage"
+	]
+}
