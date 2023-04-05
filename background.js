@@ -17,7 +17,6 @@ function sortOnKeys(dict) {
 
 function redirectToNewURL(url){
 	const regex = /^https?:\/\//i;
-	var _url    = undefined;
 	var group   = undefined;
 
 	for(var key in _groups){
@@ -30,16 +29,16 @@ function redirectToNewURL(url){
 	// in case of no active rules group or other undefined value
 	if(group === undefined ||
 		_groups[group]['rules'] === null || 
-		_groups[group]['rules'] === undefined) return;
+		_groups[group]['rules'] === undefined) 
+		return undefined;
 	
-	for(i = 0 ; i < _groups[group]['rules'].length ; i++){
+	// minify "_groups" variable
+	var g = _groups[group]['rules'];
+	for(i = 0 ; i < g.length ; i++){
 		// split with "/" (if long URL) then with ":" (if port)
 		var res = url.replace(regex,'').split('/')[0].split(':')[0];
-		
-		if(res == _groups[group]['rules'][i][0].split('/')[0]){
-			_url = _groups[group]['rules'][i][1].split('/')[0];
-			return url.replace(res, _url);
-		}				
+		if(res == g[i][0].split('/')[0])
+			return url.replace(res, g[i][1].split('/')[0]);
 	}
 	
 	return undefined;
