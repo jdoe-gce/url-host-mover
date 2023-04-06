@@ -14,29 +14,30 @@ function sortOnKeys(d) {
 }
 
 function goToNewURL(url){
+	var g   = undefined;
 	const r = /^https?:\/\//i;
-	var group = undefined;
-
-	for(var key in _groups){
-		if(_groups[key]['active']){
-			group = key;
+	
+	for(var k in _groups){
+		if(_groups[k]['active']) {
+			g = k;
 			break;
 		}
 	}
 	
 	// in case of no active rules group or other undefined value
-	if(group === undefined ||
-		_groups[group]['rules'] === null || 
-		_groups[group]['rules'] === undefined) 
+	if(g === undefined ||
+		_groups[g]['rules'] === null || 
+		_groups[g]['rules'] === undefined) 
 		return undefined;
 	
 	// minify "_groups" variable
-	var g = _groups[group]['rules'];
-	for(var i = 0 ; i < g.length ; i++){
+	var gr = _groups[g]['rules'];
+	for(var i = 0 ; i < gr.length ; i++){
 		// first split with "/" (if long URL) then with ":" (if port)
 		var res = url.replace(r,'').split('/')[0].split(':')[0];
-		if(res === g[i][0].split('/')[0].split(':')[0])
-			return url.replace(res, g[i][1].split('/')[0].split(':')[0]);
+		
+		if(res === gr[i][0].split('/')[0].split(':')[0])
+			return url.replace(res, gr[i][1].split('/')[0].split(':')[0]);
 	}
 	
 	return undefined;
