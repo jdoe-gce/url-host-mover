@@ -125,7 +125,7 @@ var emptyList = function(id){
     
     if(_current_group !== undefined){
         var el = document.getElementById('rules_title');
-        el.innerHTML = "Rules for <u>'" + _current_group + "'</u>";
+        el.innerHTML = "Rules for '<u>" + _current_group + "</u>'";
     }
 }
 
