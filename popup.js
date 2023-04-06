@@ -1,47 +1,43 @@
-function empty(element) {
-    while(element.firstElementChild) {
-       element.firstElementChild.remove();
-    }
+function empty(el) {
+    while(el.firstElementChild)
+       el.firstElementChild.remove();
 }
   
-function sortOnKeys(dict) {
-    var sorted = [];
+function sortOnKeys(d) {
+    var s = [], t = {};
     
-    for(var key in dict) {
-        sorted[sorted.length] = key;
-    }
+    for(var key in d)
+        s[s.length] = key;
     
-    sorted.sort();
+    s.sort();
 
-    var tempDict = {};
-    for(var i = 0; i < sorted.length; i++) {
-        tempDict[sorted[i]] = dict[sorted[i]];
-    }
+    for(var i = 0; i < s.length; i++)
+        t[s[i]] = d[s[i]];
 
-    return tempDict;
+    return t;
 }
   
 const isValidUrl = urlString => {
     // From this web site : https://www.freecodecamp.org/news/check-if-a-javascript-string-is-a-url/
-    var urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
+
+    var up = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
     '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name
     '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
     '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path
     '(\\?[;&a-z\\d%_.~+=-]*)?'+ // validate query string
     '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
-    return !!urlPattern.test(urlString);
+    
+    return !!up.test(urlString);
 }
   
-var isKnownGroup = function(group){
-    for(var key in _groups) {
-        if(key == group)
+var isKnownGroup = function(g){
+    for(var k in _groups)
+        if(k == g)
             return true;
-    }
-    
     return false;
 }
   
-var addHtmlGroup = function(group, ro, i){
+var addHtmlGroup = function(g, ro, i){
     var gl = document.getElementById("groups_list");
     var nd = document.createElement('div');
     var nt = document.createElement('input');
@@ -50,7 +46,7 @@ var addHtmlGroup = function(group, ro, i){
     nd.style.whiteSpace = "nowrap";
     
     nt.type  = "text";
-    nt.value = group;
+    nt.value = g;
     nt.id    = "new_group";
     if(ro) {
         nt.id = "new_group_"+i;
@@ -59,7 +55,7 @@ var addHtmlGroup = function(group, ro, i){
         
     nd.appendChild(nt);
     if(!ro){
-        nb.type = "button";
+        nb.type  = "button";
         nb.value = "Add";
         
         nb.addEventListener("click", (event) => {
@@ -75,14 +71,14 @@ var addHtmlGroup = function(group, ro, i){
         var ren = document.createElement('input');
         var che = document.createElement('input');
         
-        rem.type  = "button";
-        rem.value = "Del";
-        edi.type  = "button";
-        edi.value = "Edit";
-        ren.type  = "button";
-        ren.value = "Rename";
-        che.type  = "checkbox"
-        che.checked = _groups[group]['active'];
+        rem.type    = "button";
+        rem.value   = "Del";
+        edi.type    = "button";
+        edi.value   = "Edit";
+        ren.type    = "button";
+        ren.value   = "Rename";
+        che.type    = "checkbox"
+        che.checked = _groups[g]['active'];
         
         rem.addEventListener("click", (event) => {
             delGroup(document.getElementById('new_group_'+i).value);
@@ -110,18 +106,13 @@ var addHtmlGroup = function(group, ro, i){
     gl.appendChild(nd);
 }
   
-var activeGroup = function(group, checked){
-    if(!checked){
+var activeGroup = function(g, c){
+    if(!c) {
         _active_group = undefined;
-        _groups[group]['active'] = false;
-    } else {
-        for(var key in _groups){
-            if(key != group)
-                _groups[key]['active'] = false;
-            else
-                _groups[key]['active'] = true;
-        }
-    }
+        _groups[g]['active'] = false;
+    } else
+        for(var k in _groups)
+            _groups[k]['active'] = (k != g) ? false : true;
     
     chrome.storage.sync.set({"groups": sortOnKeys(_groups)}, function(items){
         doDOMGroupList();
@@ -140,16 +131,15 @@ var emptyList = function(id){
 
 var varToHtmlGroups = function(){
     var i = 0;
-    for(var key in _groups) {
-        addHtmlGroup(key, true, i++);
-    }
+    for(var k in _groups)
+        addHtmlGroup(k, true, i++);
 }
 
 var doDOMGroupList = function(){
     chrome.storage.sync.get("groups", function(items){
-        for(var key in items){
-            if(key == "groups"){
-                _groups = sortOnKeys(items[key]);
+        for(var k in items){
+            if(k == "groups"){
+                _groups = sortOnKeys(items[k]);
                 emptyList("groups_list");
                 varToHtmlGroups();
                 if(_current_group !== undefined)
@@ -160,8 +150,8 @@ var doDOMGroupList = function(){
     });
 }
 
-var renameGroup = function(group){
-    var new_group = prompt("Please enter the new Group name", group);
+var renameGroup = function(g){
+    var new_group = prompt("Please enter the new Group name", g);
     
     if(isKnownGroup(new_group)){
         alert('This group already exists !');
@@ -173,25 +163,25 @@ var renameGroup = function(group){
         return;
     }
     
-    _groups[new_group] = _groups[group];
-    delete _groups[group];
+    _groups[new_group] = _groups[g];
+    delete _groups[g];
         
     chrome.storage.sync.set({"groups": sortOnKeys(_groups)}, function(items){
         if(_current_group !== undefined &&
-        _current_group === group)
+        _current_group === g)
             _current_group = new_group;
             
         doDOMGroupList();
     });
 }
 
-var addGroup = function(group){
-    if(group === ""){
+var addGroup = function(g){
+    if(g === ""){
         alert('No value set !');
         return;
     }
     
-    if(isKnownGroup(group)){
+    if(isKnownGroup(g)){
         alert('This group already exists !');
         return;
     }
@@ -204,18 +194,18 @@ var addGroup = function(group){
     if(_groups === undefined)
         _groups = new Object();
     
-    _groups[group] = {"active": false};
-    _current_group = group;
+    _groups[g] = {"active": false};
+    _current_group = g;
     chrome.storage.sync.set({"groups": sortOnKeys(_groups)}, function(items){
         doDOMGroupList();
     });
 }
 
-var delGroup = function(group){
-    const conf = confirm("Are you sure you want remove "+group+" group ?");
+var delGroup = function(g){
+    const c = confirm("Are you sure you want remove " + g + " group ?");
 
-    if(conf){
-        delete _groups[group];
+    if(c){
+        delete _groups[g];
         _current_group = undefined;
         chrome.storage.sync.set({"groups": sortOnKeys(_groups)}, function(items){
             doDOMGroupList();
@@ -223,50 +213,52 @@ var delGroup = function(group){
     }
 }
   
-var isKnownRule = function(from, to, group){
-    for(var key in _groups) {
-        if(key == group){
-            if(_groups[group]['rules'] == null)
+var isKnownRule = function(f, t, g){
+    for(var k in _groups) {
+        if(k == g){
+            var gr = _groups[g]['rules'];
+            
+            if(gr == null)
                 return false;
-            for(i = 0 ; i < _groups[group]['rules'].length ; i++){
-                if(_groups[group]['rules'][i][0] == from && _groups[group]['rules'][i][1] == to)
+
+            for(var i = 0 ; i < gr.length ; i++)
+                if(gr[i][0] == f && gr[i][1] == t)
                     return true;
-            }				
         }
     }
     
     return false;
 }
 
-var addRule = function(from, to, group){
-    if(isKnownRule(from, to, group)){
-        alert('This rule already exists for the group ' + group + ' !');
+var addRule = function(f, t, g){
+    if(isKnownRule(f, t, g)){
+        alert('This rule already exists for the group ' + g + ' !');
         return;
     }
     
-    if(from === "" || to === ""){
+    if(f === "" || t === ""){
         alert('Missing value !');
         return;
     }
     
-    if(!isValidUrl(from)){
+    if(!isValidUrl(f)){
         alert('Source string is not a compliant URL !');
         return;
     }
     
-    if(!isValidUrl(to)){
+    if(!isValidUrl(t)){
         alert('Destination string is not a compliant URL !');
         return;
     }
     
-    if(_groups[group]["rules"] === undefined)
-        _groups[group]["rules"] = [[from, to]];
+    if(_groups[g]["rules"] === undefined)
+        _groups[g]["rules"] = [[f, t]];
     else{
-        if(_groups[group]["rules"].length == _max_rules){
+        if(_groups[g]["rules"].length == _max_rules){
             alert('Max rules number (' + _max_rules + ') reached !');
             return;
         }
-        _groups[group]["rules"].push([from, to]);
+        _groups[g]["rules"].push([f, t]);
     }
     
     chrome.storage.sync.set({"groups": sortOnKeys(_groups)}, function(items){
@@ -274,36 +266,36 @@ var addRule = function(from, to, group){
     });
 }
 
-var delRule = function(num, group){
-    const conf = confirm("Are you sure you want remove this rule ?");
+var delRule = function(n, g){
+    const c = confirm("Are you sure you want remove this rule ?");
 
-    if(conf){
-        _groups[group]['rules'].splice(num,1);
+    if(c){
+        _groups[g]['rules'].splice(n,1);
         chrome.storage.sync.set({"groups": sortOnKeys(_groups)}, function(items){
             doDOMGroupList();
         });
     }
 }
 
-var editRule = function(num, from, to, group){
-    if(!isValidUrl(from)){
+var editRule = function(n, f, t, g){
+    if(!isValidUrl(f)){
         alert('Source string is not Web Url compliant !');
         return;
     }
     
-    if(!isValidUrl(to)){
+    if(!isValidUrl(t)){
         alert('Destination string is not Web URL compliant !');
         return;
     }
     
-    _groups[group]['rules'][num][0] = from;
-    _groups[group]['rules'][num][1] = to;
+    _groups[g]['rules'][n][0] = f;
+    _groups[g]['rules'][n][1] = t;
     chrome.storage.sync.set({"groups": sortOnKeys(_groups)}, function(items){
         doDOMGroupList();
     });
 }
 
-var addHtmlRule = function(from_txt, to_txt, ro, i, group){
+var addHtmlRule = function(from_txt, to_txt, ro, i, g){
     var gl   = document.getElementById("group_content");
     var nd   = document.createElement('div');
     var hid  = document.createElement('input');
@@ -315,19 +307,20 @@ var addHtmlRule = function(from_txt, to_txt, ro, i, group){
     
     nd.style.whiteSpace = "nowrap";
     
-    hid.type = "hidden";
+    hid.type  = "hidden";
     hid.value = -1;
-    hid.id = "new_rule";
+    hid.id    = "new_rule";
     
     if(ro){
         hid.value = i;
-        hid.id = "new_rule_"+i;
+        hid.id  = "new_rule_"+i;
         from.id = "new_rule_from_"+i;
-        to.id = "new_rule_to_"+i;
+        to.id   = "new_rule_to_"+i;
     } else {
-        from.id = "new_rule_from";
-        to.id = "new_rule_to";
+        from.id  = "new_rule_from";
+        to.id    = "new_rule_to";
     }
+
     from.type = "text";
     from.value = from_txt;
     from.addEventListener("input", function() {
@@ -346,7 +339,7 @@ var addHtmlRule = function(from_txt, to_txt, ro, i, group){
     add.addEventListener("click", (event) => {
         addRule(document.getElementById("new_rule_from").value,
                 document.getElementById("new_rule_to").value, 
-                group);
+                g);
     });
     
     nd.appendChild(hid);
@@ -363,14 +356,14 @@ var addHtmlRule = function(from_txt, to_txt, ro, i, group){
         rem.value = "Del";
         
         rem.addEventListener("click", (event) => {
-            delRule(document.getElementById('new_rule_'+i).value, group);
+            delRule(document.getElementById('new_rule_'+i).value, g);
         });
         
         edi.addEventListener("click", (event) => {
             editRule(document.getElementById('new_rule_'+i).value, 
                     document.getElementById('new_rule_from_'+i).value, 
                     document.getElementById('new_rule_to_'+i).value, 
-                    group);
+                    g);
         });
         
         nd.appendChild(edi);
@@ -380,45 +373,47 @@ var addHtmlRule = function(from_txt, to_txt, ro, i, group){
     gl.appendChild(nd);
 } 
   
-var addHtmlRuleButton = function(group){
+var addHtmlRuleButton = function(g){
     var gl = document.getElementById("group_content");
     var bt = document.createElement('input')
     bt.type = 'button';
     bt.value = 'Add Rule';
-    bt.className = group;
+    bt.className = g;
     bt.addEventListener("click", (event) => {
-        if(_groups[group]["rules"] !== null && 
-            _groups[group]["rules"] !== undefined && 
-            _groups[group]["rules"].length == _max_rules){
+        if(_groups[g]["rules"] !== null && 
+            _groups[g]["rules"] !== undefined && 
+            _groups[g]["rules"].length == _max_rules){
             alert('Max rules number ('+_max_rules+') reached !');
             return;
         }
         
         if(document.getElementById('new_rule') === null)
-            addHtmlRule("", "", false, "", group);
+            addHtmlRule("", "", false, "", g);
     });
     gl.appendChild(bt);
 }
 
-var varToHtmlGroupRules = function(group){
-    addHtmlRuleButton(group);
-    if(_groups[group]["rules"] === undefined)
+var varToHtmlGroupRules = function(g){
+    addHtmlRuleButton(g);
+    if(_groups[g]["rules"] === undefined)
         return;
     
-    for(i = 0 ; i < _groups[group]["rules"].length ; i++) {
-        addHtmlRule(_groups[group]["rules"][i][0].toString(), 
-                    _groups[group]["rules"][i][1].toString(), 
-                    true, i, group);
+    var gr = _groups[g]["rules"];
+
+    for(var i = 0 ; i < gr.length ; i++) {
+        addHtmlRule(gr[i][0].toString(), 
+                    gr[i][1].toString(), 
+                    true, i, g);
     }
 }
 
-var doDOMRulesList = function(group){
+var doDOMRulesList = function(g){
     chrome.storage.sync.get("groups", function(items){
-        for(var key in items){
-            if(key == "groups"){
-                _groups = items[key];
+        for(var k in items){
+            if(k == "groups"){
+                _groups = items[k];
                 emptyList("group_content");
-                varToHtmlGroupRules(group);
+                varToHtmlGroupRules(g);
                 break;
             }
         }
@@ -433,8 +428,9 @@ var _max_groups    = 20;
 var _max_rules     = 50;
 
 document.addEventListener('DOMContentLoaded', function() { 
-    var group_add = document.getElementById("group_add");
-    group_add.addEventListener("click", (event) => {
+    var ga = document.getElementById("group_add");
+
+    ga.addEventListener("click", (ev) => {
         if(_groups !== undefined && 
             Object.keys(_groups).length === _max_groups){
             alert('Max groups number (' + _max_groups + ') reached !');
