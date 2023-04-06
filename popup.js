@@ -242,12 +242,12 @@ var addRule = function(f, t, g){
     }
     
     if(!isValidUrl(f)){
-        alert('Source string is not a compliant URL !');
+        alert('Source string is not Web URL compliant !');
         return;
     }
     
     if(!isValidUrl(t)){
-        alert('Destination string is not a compliant URL !');
+        alert('Destination string is not Web URL compliant !');
         return;
     }
     
@@ -279,7 +279,7 @@ var delRule = function(n, g){
 
 var editRule = function(n, f, t, g){
     if(!isValidUrl(f)){
-        alert('Source string is not Web Url compliant !');
+        alert('Source string is not Web URL compliant !');
         return;
     }
     
