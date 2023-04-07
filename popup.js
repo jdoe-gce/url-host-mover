@@ -213,7 +213,7 @@ var delGroup = function(g){
     }
 }
   
-var isKnownRule = function(f, t, g){
+var isKnownRule = function(f, g){
     for(var k in _groups) {
         if(k == g){
             var gr = _groups[g]['rules'];
@@ -222,7 +222,7 @@ var isKnownRule = function(f, t, g){
                 return false;
 
             for(var i = 0 ; i < gr.length ; i++)
-                if(gr[i][0] == f && gr[i][1] == t)
+                if(gr[i][0] == f)
                     return true;
         }
     }
@@ -231,8 +231,8 @@ var isKnownRule = function(f, t, g){
 }
 
 var addRule = function(f, t, g){
-    if(isKnownRule(f, t, g)){
-        alert('This rule already exists for the group ' + g + ' !');
+    if(isKnownRule(f, g)){
+        alert('This rule (' + f +') already exists in this group (' + g + ') !');
         return;
     }
     
