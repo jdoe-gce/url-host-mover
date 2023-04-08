@@ -153,6 +153,10 @@ var doDOMGroupList = function(){
 var renameGroup = function(g){
     var new_group = prompt("Please enter the new Group name", g);
     
+	if(new_group === null){
+        return;
+    }
+	
     if(isKnownGroup(new_group)){
         alert('This group already exists !');
         return;
@@ -232,7 +236,7 @@ var isKnownRule = function(f, g){
 
 var addRule = function(f, t, g){
     if(isKnownRule(f, g)){
-        alert('This rule (' + f +') already exists in this group (' + g + ') !');
+        alert('An other rule already exists in this group (' + g + ') for "' + f + '" !');
         return;
     }
     
