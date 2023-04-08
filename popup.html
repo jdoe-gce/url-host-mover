@@ -5,7 +5,7 @@
     <script src="popup.js"></script>
 	<style>
 		body {
-			background: radial-gradient(#bbb, #000);
+			background-color: #EFEFEF;
 		}
 
 		input[type="button"] {
@@ -60,26 +60,26 @@
 		
 		.scrollbar::-webkit-scrollbar {
             width: 10px;
-    }
-    
-    .scrollbar::-webkit-scrollbar-track {
-        border-radius: 8px;
-        background-color: #e7e7e7;
-        border: 1px solid #cacaca;
-        box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-    }
-    
-    .scrollbar::-webkit-scrollbar-thumb {
-        border-radius: 8px;
-        background-color: #1E55B3;
-    }
+        }
+        
+        .scrollbar::-webkit-scrollbar-track {
+            border-radius: 8px;
+            background-color: #e7e7e7;
+            border: 1px solid #cacaca;
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+        }
+        
+        .scrollbar::-webkit-scrollbar-thumb {
+            border-radius: 8px;
+            background-color: #1E55B3;
+        }
 	</style>
   </head>
   <body>
-	<h2 style="color: white;">Groups</h2>
+	<h2>Groups</h2>
 	<input type="button" id="group_add" value="Add group" />
 	<div id="groups_list" style="height: 75px; overflow-y:auto; overflow-x:auto;" class="scrollbar"></div>
-	<h2 id="rules_title" style="color: white;">Rules</h2>
+	<h2 id="rules_title">Rules</h2>
 	<div id="group_content" style="height: 150px; overflow-y:auto; overflow-x:auto;" class="scrollbar"></div>
   </body>
 </html>
