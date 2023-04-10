@@ -42,6 +42,7 @@ var addHtmlGroup = function(g, ro, i){
     var nd = document.createElement('div');
     var nt = document.createElement('input');
     var nb = document.createElement('input');
+	var nc = document.createElement('input');
         
     nd.style.whiteSpace = "nowrap";
     
@@ -55,13 +56,25 @@ var addHtmlGroup = function(g, ro, i){
         
     nd.appendChild(nt);
     if(!ro){
-        nb.type  = "button";
+        // add Group button
+		nb.type  = "button";
         nb.value = "Add";
         
         nb.addEventListener("click", (event) => {
             addGroup(document.getElementById("new_group").value);
         });
-        nd.appendChild(nb);
+		
+		nd.appendChild(nb);
+		
+		// cancel button
+		nc.type  = "button";
+        nc.value = "Cancel";
+        
+        nc.addEventListener("click", (event) => {
+            doDOMGroupList();
+        });
+		
+        nd.appendChild(nc);
     }
     
     if(ro)
@@ -72,7 +85,7 @@ var addHtmlGroup = function(g, ro, i){
         var che = document.createElement('input');
         
         rem.type    = "button";
-        rem.value   = "Del";
+        rem.value   = "Delete";
         edi.type    = "button";
         edi.value   = "Edit";
         ren.type    = "button";
@@ -86,7 +99,8 @@ var addHtmlGroup = function(g, ro, i){
         
         edi.addEventListener("click", (event) => {
             _current_group = document.getElementById('new_group_'+i).value;
-            doDOMRulesList(_current_group);
+            doDOMGroupList();
+			doDOMRulesList(_current_group);
         });
         
         ren.addEventListener("click", (event) => {
@@ -125,7 +139,7 @@ var emptyList = function(id){
     
     if(_current_group !== undefined){
         var el = document.getElementById('rules_title');
-        el.innerHTML = "Rules for '<u>" + _current_group + "</u>'";
+        el.innerHTML = "Rules for <span class='label'>" + _current_group + "</span>";
     }
 }
 
@@ -302,12 +316,13 @@ var editRule = function(n, f, t, g){
 var addHtmlRule = function(from_txt, to_txt, ro, i, g){
     var gl   = document.getElementById("group_content");
     var nd   = document.createElement('div');
-    var hid  = document.createElement('input');
+	var hid  = document.createElement('input');
     var from = document.createElement('input');
     var to   = document.createElement('input');
     var add  = document.createElement('input');
     var edi  = document.createElement('input');
     var rem  = document.createElement('input');
+	var can  = document.createElement('input');
     
     nd.style.whiteSpace = "nowrap";
     
@@ -349,16 +364,28 @@ var addHtmlRule = function(from_txt, to_txt, ro, i, g){
     nd.appendChild(hid);
     nd.appendChild(from);
     nd.appendChild(to);
-    if(!ro)
+    if(!ro) {
         nd.appendChild(add);
-    
+		
+		can.type  = "button";
+        can.value = "Cancel";
+		
+		// cancel button
+        can.addEventListener("click", (event) => {
+            doDOMRulesList(g);
+        });
+		
+		nd.appendChild(can);
+    }
+	
     if(ro)
     {
         edi.type  = "button";
         edi.value = "Save";
         rem.type  = "button";
-        rem.value = "Del";
+        rem.value = "Delete";
         
+		
         rem.addEventListener("click", (event) => {
             delRule(document.getElementById('new_rule_'+i).value, g);
         });
@@ -382,7 +409,9 @@ var addHtmlRuleButton = function(g){
     var bt = document.createElement('input')
     bt.type = 'button';
     bt.value = 'Add Rule';
-    bt.className = g;
+    bt.style.fontSize = '13px';
+	bt.style.fontWeight = 'bold';
+	
     bt.addEventListener("click", (event) => {
         if(_groups[g]["rules"] !== null && 
             _groups[g]["rules"] !== undefined && 
