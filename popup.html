@@ -29,7 +29,12 @@
 			touch-action: manipulation;
 			vertical-align: middle;
 		}
-
+		
+		input[type="button"].main {
+			background-color: #708090;
+			color: white;
+		}
+		
 		input[type="button"]:hover {
 			background-color: #1E55B3;
 			color: white;
@@ -46,7 +51,7 @@
 			padding: 1px 2px 2px 2px;
 			background-color: #FFFFFF;
 			color: #000000;
-			border-bottom : 2px solid #AAA;
+			border-bottom : 2px solid #1E55B3;
 			border-top    : 0px;
 			border-left   : 0px;
 			border-right  : 0px;
@@ -83,10 +88,10 @@
 	</style>
   </head>
   <body>
-	<h2>Groups</h2>
-	<input type="button" id="group_add" value="Add group" style="font-size: 13px;font-weight: bold;"/>
+	<h2 style="border-bottom: 1px solid lightgray;">Groups</h2>
+	<input type="button" id="group_add" value="Add group" style="font-size: 13px;font-weight: bold; width: 100%;" class="main" />
 	<div id="groups_list" style="height: 100px; overflow-y:auto; overflow-x:auto;" class="scrollbar"></div>
-	<h2 id="rules_title">Rules</h2>
+	<h2 id="rules_title" style="border-bottom: 1px solid lightgray;">Rules</h2>
 	<div id="group_content" style="height: 150px; overflow-y:auto; overflow-x:hidden;" class="scrollbar"></div>
   </body>
 </html>
