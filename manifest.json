@@ -5,9 +5,9 @@
 	"version": "0.0.3.0",
 	"action": {
 		"default_icon": {
-			"16": "um-logo-16.png",
-			"24": "um-logo-24.png",
-			"32": "um-logo-32.png"
+			"16": "img/um-logo-16.png",
+			"24": "img/um-logo-24.png",
+			"32": "img/um-logo-32.png"
 		},
 		"default_title": "URL Host Mover",
 		"default_popup": "popup.html"
