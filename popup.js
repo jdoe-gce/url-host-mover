@@ -411,6 +411,8 @@ var addHtmlRuleButton = function(g){
     bt.value = 'Add Rule';
     bt.style.fontSize = '13px';
 	bt.style.fontWeight = 'bold';
+	bt.style.width = '100%';
+	bt.className = 'main';
 	
     bt.addEventListener("click", (event) => {
         if(_groups[g]["rules"] !== null && 

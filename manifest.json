@@ -1,15 +1,15 @@
 {
 	"manifest_version": 3,
-	"name": "URL Mover",
+	"name": "URL Host Mover",
 	"description": "Multiple groups of URL redirection rules",
-	"version": "0.0.2.0",
+	"version": "0.0.3.0",
 	"action": {
 		"default_icon": {
 			"16": "um-logo-16.png",
 			"24": "um-logo-24.png",
 			"32": "um-logo-32.png"
 		},
-		"default_title": "URL Mover",
+		"default_title": "URL Host Mover",
 		"default_popup": "popup.html"
 	},
 	"background": {
